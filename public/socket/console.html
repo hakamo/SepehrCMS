@@ -1,0 +1,45 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+    <title>Farhad Mehryari | Websocket Client</title>
+</head>
+<body>
+    <textarea id="log" style="height:200px;width:300px;"></textarea>
+    <br>
+    <input type="text" id="message" />
+    <input type="button" value="send !" onclick="sendmsg()" />
+    <script>
+                var log=document.getElementById("log");
+        //serverUrl = 'ws://127.0.0.1:8000/websocket/server.php';
+                serverUrl = 'ws://127.0.0.1:8080';
+                if (window.MozWebSocket) {
+                    socket = new MozWebSocket(serverUrl);
+                } else if (window.WebSocket) {
+                    socket = new WebSocket(serverUrl);
+                }
+
+                  socket.binaryType = 'blob';
+                  socket.onopen = function(msg) {
+                     log.value="> connected to socket\r\n";
+                      return true;
+                  };
+
+                  socket.onmessage = function(msg) {
+                      log.value+="> "+msg.data+"\r\n";
+                      return true;
+                  };
+                  socket.onclose = function(msg) {
+                    console.log("Bye Bye socket");
+                      return true;
+                  };
+
+                  function sendmsg()
+                  {
+                    var msg=document.getElementById("message");
+                    log.value+="> Me : "+msg.value+"\r\n";
+                    socket.send(msg.value);
+                  }
+
+    </script>
+</body>
+</html>
